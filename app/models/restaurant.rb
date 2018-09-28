@@ -21,15 +21,15 @@ class Restaurant
 
   # - `Restaurant#customers`
   #   - Returns a **unique** list of all customers who have reviewed a particular restaurant.
-  def self.customers(restaurant)
-    Review.all.select {|r| r.restaurant == restaurant}.uniq
+  def customers
+    reviews.map {|r| r.customer }.uniq
   end
 
 
   # - `Restaurant#reviews`
   #   - returns an array of all reviews for that restaurant
   def reviews
-    Review.all.select {|r| r == self}
+    Review.all.select {|r| r.restaurant == self}
   end
 
 
