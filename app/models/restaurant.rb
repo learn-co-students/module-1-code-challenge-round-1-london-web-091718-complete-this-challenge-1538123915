@@ -1,50 +1,44 @@
+
 class Restaurant
   attr_accessor :name
   @@all = []
-
   def initialize(name)
     @name = name
     @@all << self
   end
 
-  # - `Restaurant.all`
-  #   - returns an array of all restaurants
   def self.all
     @@all
   end
 
-  # - `Restaurant.find_by_name(name)`
-  #   - given a string of restaurant name, returns the first restaurant that matches
   def self.find_by_name(name)
-    all.find {|r| r.name == name}
-  end
-
-  # - `Restaurant#customers`
-  #   - Returns a **unique** list of all customers who have reviewed a particular restaurant.
-  def customers
-    reviews.map {|r| r.customer }.uniq
+    all.select {|r| r.name == name}
   end
 
 
-  # - `Restaurant#reviews`
-  #   - returns an array of all reviews for that restaurant
   def reviews
-    Review.all.select {|r| r.restaurant == self}
+    Review.all.select {|rev| rev.restaurant == self}
   end
 
+  def customers
+    reviews.map {|rev| rev.customer}.uniq
+  end
 
+  def average_star_rating
+    sum = 0
+    reviews.map {|rev| sum += rev.rating}
+    sum / reviews.length
+  end
+
+  def longest_review
+    size = 0
+    str = ""
+    reviews.each do |e|
+      if e.content.length > size
+        size = e.content.length
+        str = e.content
+      end
+  end
+    str
+  end
 end
-
-
-
-
-
-
-#### Restaurant
-
-
-
-# - `Restaurant#average_star_rating`
-#   - returns the average star rating for a restaurant based on its reviews
-# - `Restaurant#longest_review`
-#   - returns the longest review content for a given restaurant
